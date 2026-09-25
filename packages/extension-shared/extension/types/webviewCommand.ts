@@ -1,6 +1,7 @@
 import { type JSONTableSchema } from "shared/types/tableSchema";
 
 export enum WebviewCommand {
+  WEBVIEW_READY = "WEBVIEW_READY",
   SET_THEME_PREFERENCES = "SET_THEME_PREFERENCES",
 }
 

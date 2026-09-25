@@ -1,5 +1,5 @@
 import { Group, Layer, Stage } from "react-konva";
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { type KonvaEventObject } from "konva/lib/Node";
 
 import Toolbar from "../Toolbar/Toolbar";
@@ -40,6 +40,32 @@ const DiagramWrapper = ({ children }: DiagramWrapperProps) => {
   // repositioning the stage only once
   const { scale: defaultStageScale, position: defaultStagePosition } =
     useStageStartingState();
+  const [zoom, setZoom] = useState(defaultStageScale);
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (stage == null) return;
+    const syncZoom = () => setZoom(stage.scaleX());
+    syncZoom();
+    stage.on("scaleXChange.toolbarZoom", syncZoom);
+    return () => {
+      stage.off("scaleXChange.toolbarZoom", syncZoom);
+    };
+  }, []);
+
+  const handleToolbarZoom = (scale: number) => {
+    const stage = stageRef.current;
+    if (stage == null || !Number.isFinite(scale) || scale <= 0) return;
+    const center = { x: stage.width() / 2, y: stage.height() / 2 };
+    const ratio = scale / stage.scaleX();
+    const position = {
+      x: center.x - (center.x - stage.x()) * ratio,
+      y: center.y - (center.y - stage.y()) * ratio,
+    };
+    stage.scale({ x: scale, y: scale });
+    stage.position(position);
+    stage.batchDraw();
+    stageStateStore.set({ scale, position });
+  };
   useEffect(() => {
     if (stageRef.current != null) {
       stageRef.current.scale({
@@ -268,7 +294,12 @@ const DiagramWrapper = ({ children }: DiagramWrapperProps) => {
         </Layer>
       </Stage>
 
-      <Toolbar onFitToView={fitToView} onDownload={onDownload} />
+      <Toolbar
+        onFitToView={fitToView}
+        onDownload={onDownload}
+        zoom={zoom}
+        onZoomChange={handleToolbarZoom}
+      />
     </>
   );
 };

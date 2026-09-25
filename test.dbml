@@ -1,0 +1,16 @@
+Table departments {
+  id integer [pk, note: 'Unique identifier for the department']
+  name varchar [note: 'Name of the department']
+
+  Note: 'Stores department information.'
+}
+
+Table employees {
+  id integer [pk, note: 'Unique identifier for the employee']
+  name varchar [note: 'Full name of the employee']
+  department_id integer [note: 'Department where the employee belongs']
+
+  Note: 'Stores employee information, including the department assigned to each employee.'
+}
+
+Ref: employees.department_id > departments.id

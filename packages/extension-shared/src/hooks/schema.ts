@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { type JSONTableSchema } from "shared/types/tableSchema";
 import { tableCoordsStore } from "json-table-schema-visualizer/src/stores/tableCoords";
 import { stageStateStore } from "json-table-schema-visualizer/src/stores/stagesState";
 import { detailLevelStore } from "json-table-schema-visualizer/src/stores/detailLevelStore";
 
-import { type SetSchemaCommandPayload } from "../../extension/types/webviewCommand";
+import {
+  WebviewCommand,
+  type SetSchemaCommandPayload,
+} from "../../extension/types/webviewCommand";
 
 export const useSchema = (): {
   schema: JSONTableSchema | null;
@@ -16,6 +19,7 @@ export const useSchema = (): {
   );
   const [schema, setSchema] = useState<JSONTableSchema | null>(null);
   const [schemaKey, setSchemaKey] = useState<string | null>(null);
+  const currentSchemaKey = useRef<string | null>(null);
 
   const updater = (e: MessageEvent): void => {
     const message = e.data as SetSchemaCommandPayload;
@@ -35,7 +39,7 @@ export const useSchema = (): {
       return;
     }
 
-    if (message.key !== schemaKey) {
+    if (message.key !== currentSchemaKey.current) {
       // update stores
       tableCoordsStore.switchTo(
         message.key,
@@ -45,6 +49,7 @@ export const useSchema = (): {
       stageStateStore.switchTo(message.key);
       detailLevelStore.switchTo(message.key);
 
+      currentSchemaKey.current = message.key;
       setSchemaKey(message.key);
     }
 
@@ -54,6 +59,11 @@ export const useSchema = (): {
 
   useEffect(() => {
     window.addEventListener("message", updater);
+    // Request data only after the receiver exists, including after webview reloads.
+    window.vsCodeWebviewAPI?.postMessage({
+      command: WebviewCommand.WEBVIEW_READY,
+      message: "",
+    });
 
     return () => {
       window.removeEventListener("message", updater);

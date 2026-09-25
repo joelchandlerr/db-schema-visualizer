@@ -31,7 +31,7 @@ import computeFieldDisplayTypeName from "@/utils/getFieldType";
 
 interface TableProps extends JSONTableTable {}
 
-const Table = ({ fields, name }: TableProps) => {
+const Table = ({ fields, name, note }: TableProps) => {
   const themeColors = useThemeColors();
   const { detailLevel } = useTableDetailLevel();
   const tableRef = useRef<null | Konva.Group>(null);
@@ -142,7 +142,7 @@ const Table = ({ fields, name }: TableProps) => {
         cornerRadius={PADDINGS.sm}
       />
 
-      <TableHeader title={name} />
+      <TableHeader title={name} note={note} />
       {detailLevel !== TableDetailLevel.HeaderOnly ? (
         <Group y={TABLE_HEADER_HEIGHT}>
           {visibleFields.map((field, index) => (

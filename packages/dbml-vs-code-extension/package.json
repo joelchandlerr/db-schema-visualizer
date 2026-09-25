@@ -87,12 +87,12 @@
     "pretest": "yarn run compile-tests && yarn run build && yarn run lint",
     "lint": "eslint src --ext ts",
     "test": "vscode-test",
-    "build": "npx vite build && yarn run generate:css",
+    "build": "vite build && yarn run generate:css",
     "package": "yarn run build",
     "preview": "npx vite preview",
     "create:package": "vsce package",
     "publish": "vsce publish",
-    "generate:css": "cd ../json-table-schema-visualizer && npx tailwindcss -i ./src/styles/index.css >  ../dbml-vs-code-extension/dist/webview/assets/index.css --minify"
+    "generate:css": "cd ../json-table-schema-visualizer && tailwindcss -i ./src/styles/index.css >  ../dbml-vs-code-extension/dist/webview/assets/index.css --minify"
   },
   "devDependencies": {
     "@tomjs/vite-plugin-vscode": "^2.2.0",

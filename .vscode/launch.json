@@ -15,7 +15,7 @@
       "outFiles": [
         "${workspaceFolder}/packages/dbml-vs-code-extension/dist/extension/*.js"
       ],
-      "preLaunchTask": "yarn: dev"
+      //"preLaunchTask": "yarn: dev"
     },
     {
       "name": "Preview DBML Extension",

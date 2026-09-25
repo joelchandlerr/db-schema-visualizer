@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/react";
+import { useState } from "react";
 
 import Toolbar from "./Toolbar";
 
@@ -13,8 +14,20 @@ export default meta;
 
 type Story = StoryObj<typeof Toolbar>;
 
+const ToolbarPreview = () => {
+  const [zoom, setZoom] = useState(0.75);
+  return (
+    <Toolbar
+      onFitToView={() => setZoom(0.75)}
+      onDownload={() => {}}
+      zoom={zoom}
+      onZoomChange={setZoom}
+    />
+  );
+};
+
 export const ToolbarStory: Story = {
-  render: () => <Toolbar />,
+  render: () => <ToolbarPreview />,
   decorators: [
     (Story) => (
       <div className="py-32">

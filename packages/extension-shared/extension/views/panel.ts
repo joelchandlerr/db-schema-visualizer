@@ -23,6 +23,7 @@ import { ExtensionConfig } from "../helper/extensionConfigs";
 import { type ExtensionRenderProps } from "../types";
 
 import { WebviewHelper } from "./helper";
+import { WebviewCommand } from "../types/webviewCommand";
 
 export class MainPanel {
   public static currentPanel: MainPanel | undefined;
@@ -31,6 +32,8 @@ export class MainPanel {
   private readonly _disposables: Disposable[] = [];
   // to add debouncing on diagram update after a file change
   private _lastTimeout: NodeJS.Timeout | null = null;
+  private _document: TextDocument | undefined;
+  private _webviewReady = false;
   public static parseCode: (code: string) => JSONTableSchema;
   public static fileExt: string;
   public static diagnosticCollection =
@@ -59,13 +62,22 @@ export class MainPanel {
       defaultPageConfig,
     );
 
-    this._panel.webview.html = html;
+    this._panel.webview.onDidReceiveMessage(
+      (message: { command?: string }) => {
+        if (message.command !== WebviewCommand.WEBVIEW_READY) return;
+        this._webviewReady = true;
+        if (this._document != null) MainPanel.publishSchema(this._document);
+      },
+      undefined,
+      this._disposables,
+    );
 
     WebviewHelper.setupWebviewHooks(
       this._panel.webview,
       extensionConfig,
       this._disposables,
     );
+    this._panel.webview.html = html;
   }
 
   /**
@@ -162,6 +174,10 @@ export class MainPanel {
   }
 
   static publishSchema = (document: TextDocument): void => {
+    const panel = MainPanel.currentPanel;
+    if (panel == null) return;
+    panel._document = document;
+    if (!panel._webviewReady) return;
     const code = document.getText();
     try {
       const schema = MainPanel.parseCode(code);
@@ -209,6 +225,7 @@ export class MainPanel {
    * Cleans up and disposes of webview resources when the webview panel is closed.
    */
   public dispose(): void {
+    if (this._lastTimeout != null) clearTimeout(this._lastTimeout);
     MainPanel.currentPanel = undefined;
 
     // Dispose of the current webview panel
