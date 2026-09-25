@@ -45,13 +45,13 @@ Open the repository folder itself so VS Code loads `.vscode/launch.json`. Openin
 
 Useful source locations:
 
-| Location | Purpose |
-| --- | --- |
+| Location                                               | Purpose                                                    |
+| ------------------------------------------------------ | ---------------------------------------------------------- |
 | `packages/json-table-schema-visualizer/src/components` | Shared diagram UI, table notes, toolbar, and zoom controls |
-| `packages/extension-shared/src` | Shared React webview and schema reception |
-| `packages/extension-shared/extension` | Shared extension host and webview communication |
-| `packages/dbml-to-json-table-schema/src` | DBML parsing and transformation |
-| `packages/dbml-vs-code-extension` | DBML extension configuration and build setup |
+| `packages/extension-shared/src`                        | Shared React webview and schema reception                  |
+| `packages/extension-shared/extension`                  | Shared extension host and webview communication            |
+| `packages/dbml-to-json-table-schema/src`               | DBML parsing and transformation                            |
+| `packages/dbml-vs-code-extension`                      | DBML extension configuration and build setup               |
 
 Save all edits before building. Changing source files alone does not update the already-built extension.
 
@@ -72,7 +72,7 @@ packages/dbml-vs-code-extension/dist/webview/assets/index.js
 packages/dbml-vs-code-extension/dist/webview/assets/index.css
 ```
 
-Wait for the entire command to finish successfully, including CSS generation. Expected output includes `extension build success` and a final `Done in ...` message. Check the exit status immediately afterward if needed:
+Wait for the entire command to finish successfully, including CSS generation. Expected output includes `extension build success` and a completion message such as `Done in 36.64s.` The duration varies between runs. Check the exit status immediately afterward if needed:
 
 ```powershell
 $LASTEXITCODE
@@ -163,8 +163,8 @@ Check the timestamp so you install the newly generated file rather than an older
 Use your regular VS Code window:
 
 1. Open Extensions with `Ctrl+Shift+X`.
-2. Open the **…** menu.
-3. Select **Install from VSIX…**.
+2. Open the **More Actions** menu using the three-dot button at the top of the Extensions panel.
+3. Select **Install from VSIX**.
 4. Choose the generated `.vsix` file.
 5. Reload or restart VS Code if prompted, and ensure the extension is enabled.
 

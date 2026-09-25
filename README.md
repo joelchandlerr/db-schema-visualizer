@@ -13,6 +13,9 @@ An Vscode extension to visualize the database schema in ERD from dbml or prisma 
 
 ## How to install and use it
 
+For local customization, see [Development to VSIX](./DEVELOPMENT_TO_VSIX.md).
+To run development dependencies in Docker, see [Docker development](./DOCKER_DEVELOPMENT.md).
+
 Follow this article: <https://juste.bocovo.me/preview-dbml-code-from-vscode>
 
 ## Downloads

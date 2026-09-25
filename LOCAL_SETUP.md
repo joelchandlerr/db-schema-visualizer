@@ -96,7 +96,7 @@ EPERM: operation not permitted
 This was a permissions issue, not a problem with the project. Running PowerShell as Administrator could allow Corepack to create those files, but it was unnecessary. The project instead uses:
 
 ```powershell
-npx --yes yarn@1.22.22 ...
+npx --yes yarn@1.22.22 install
 ```
 
 This avoids modifying the protected Node.js installation directory.
@@ -128,7 +128,7 @@ The command should return `True`. A successful installation normally ends with o
 
 ```text
 success Saved lockfile.
-Done in ...
+Done in 36.64s.
 ```
 
 If the command continues retrying, stop it with `Ctrl+C`, check the network/VPN/firewall, and run the install command again.
@@ -171,7 +171,7 @@ Successful output includes messages similar to:
 
 ```text
 extension build success
-Done in ...
+Done in 36.64s.
 ```
 
 Verify the build output:
@@ -337,7 +337,7 @@ packages\dbml-vs-code-extension
 Install it through VS Code:
 
 ```text
-Extensions → ... → Install from VSIX...
+Extensions → More Actions menu → Install from VSIX
 ```
 
 Or from PowerShell, using the generated filename:
@@ -386,4 +386,3 @@ npx --yes yarn@1.22.22 --cwd packages/dbml-vs-code-extension create:package
 ```
 
 Install the generated `.vsix` through the VS Code Extensions menu.
-

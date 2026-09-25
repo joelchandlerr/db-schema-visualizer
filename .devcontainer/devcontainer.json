@@ -1,0 +1,29 @@
+{
+  "name": "DB Schema Visualizer development",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/db-schema-visualizer,type=bind",
+  "workspaceFolder": "/workspaces/db-schema-visualizer",
+  "remoteUser": "node",
+  "mounts": [
+    "source=${devcontainerId}-root-deps,target=/workspaces/db-schema-visualizer/node_modules,type=volume",
+    "source=${devcontainerId}-dbml-parser-deps,target=/workspaces/db-schema-visualizer/packages/dbml-to-json-table-schema/node_modules,type=volume",
+    "source=${devcontainerId}-dbml-extension-deps,target=/workspaces/db-schema-visualizer/packages/dbml-vs-code-extension/node_modules,type=volume",
+    "source=${devcontainerId}-extension-shared-deps,target=/workspaces/db-schema-visualizer/packages/extension-shared/node_modules,type=volume",
+    "source=${devcontainerId}-visualizer-deps,target=/workspaces/db-schema-visualizer/packages/json-table-schema-visualizer/node_modules,type=volume",
+    "source=${devcontainerId}-prisma-parser-deps,target=/workspaces/db-schema-visualizer/packages/prisma-to-json-table-schema/node_modules,type=volume",
+    "source=${devcontainerId}-prisma-extension-deps,target=/workspaces/db-schema-visualizer/packages/prisma-vs-code-extension/node_modules,type=volume",
+    "source=${devcontainerId}-shared-deps,target=/workspaces/db-schema-visualizer/packages/shared/node_modules,type=volume"
+  ],
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": ["dbaeumer.vscode-eslint"],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  }
+}

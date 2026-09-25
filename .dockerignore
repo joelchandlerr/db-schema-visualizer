@@ -1,0 +1,12 @@
+.git
+**/node_modules
+**/dist
+**/out
+**/coverage
+**/storybook-static
+**/.vscode-test
+**/*.vsix
+**/*.log
+.yarn
+.env
+.env.*
